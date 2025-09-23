@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Test {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  role      String   @default("user")
+  name      String?
+  password  String?
+
+  boards    Board[]  // relation: a user can have many boards
+}
+
+model Board {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+
+  ownerId   Int
+  owner     User     @relation(fields: [ownerId], references: [id])
+}
+
+
+model notes {
+  id         Int       @id @default(autoincrement())
+  author_id  Int
+  note       String    @db.VarChar(250)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  updated_at DateTime? @default(now()) @db.Timestamp(0)
+}

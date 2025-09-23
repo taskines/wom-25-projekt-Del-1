@@ -1,0 +1,23 @@
+@apiUrl = http://localhost:8080/boards
+@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoidGFza2luZXNAYXJjYWRhLmZpIiwibmFtZSI6bnVsbCwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTg2MjA1ODAsImV4cCI6MTc2MTIxMjU4MH0.332X4MHIFBX0hyyE_9jOiq1Gjo8Woou_HJ1e9YC1C_I
+
+### Get all boards for logged-in user
+GET {{apiUrl}}
+Authorization: Bearer {{token}}
+
+###
+
+### Create a new board
+POST {{apiUrl}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Ruubens board"
+}
+
+###
+
+### Delete a board by ID (replace 1 with the actual board id)
+DELETE {{apiUrl}}/1
+Authorization: Bearer {{token}}

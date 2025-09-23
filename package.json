@@ -1,0 +1,34 @@
+{
+  "name": "wom-25-projekt-del-1",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/taskines/wom-25-projekt-Del-1#readme",
+  "bugs": {
+    "url": "https://github.com/taskines/wom-25-projekt-Del-1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taskines/wom-25-projekt-Del-1.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server.js",
+    "dev": "nodemon -L src/server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.16.2"
+  }
+}
