@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
     res.send({msg: "Login OK", jwt: token})
 })
 
-router.post('/', async (req, res) => {
+router.post('/signup', async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 12)

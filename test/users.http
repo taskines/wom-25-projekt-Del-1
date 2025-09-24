@@ -1,6 +1,6 @@
 @apiURL = http://localhost:8080/users
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.IqDMrOYgJoQHJ49ReYv576uOTKvvqo4uQ9WYVQGitko
+@token =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGFza2luZXNlZUBhcmNhZGEuZmkiLCJuYW1lIjpudWxsLCJyb2xlIjoidXNlciIsImlhdCI6MTc1ODcyNjgyMywiZXhwIjoxNzYxMzE4ODIzfQ.LCWF-QjtZ2BiBfOdtCH8OZJl37LSL8NlhrJh3ZkEIVs
 GET {{apiURL}}
 Authorization: Bearer {{token}}
 
@@ -10,7 +10,7 @@ POST {{apiURL}}/login
 Content-Type: application/json
 
 { 
-    "email": "taskines@arcada.fi", 
+    "email": "taskinesee@arcada.fi", 
     "password": "Password12" 
 }
 
