@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:8080/boards
-@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoidGFza2luZXNAYXJjYWRhLmZpIiwibmFtZSI6bnVsbCwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTg2MjA1ODAsImV4cCI6MTc2MTIxMjU4MH0.332X4MHIFBX0hyyE_9jOiq1Gjo8Woou_HJ1e9YC1C_I
+@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGFza2luZXNlZUBhcmNhZGEuZmkiLCJuYW1lIjpudWxsLCJyb2xlIjoidXNlciIsImlhdCI6MTc1ODcyNjgyMywiZXhwIjoxNzYxMzE4ODIzfQ.LCWF-QjtZ2BiBfOdtCH8OZJl37LSL8NlhrJh3ZkEIVs
 
 ### Get all boards for logged-in user
 GET {{apiUrl}}
