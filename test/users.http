@@ -1,6 +1,6 @@
 @apiURL = http://localhost:8080/users
 
-@token =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGFza2luZXNlZUBhcmNhZGEuZmkiLCJuYW1lIjpudWxsLCJyb2xlIjoidXNlciIsImlhdCI6MTc1ODcyNjgyMywiZXhwIjoxNzYxMzE4ODIzfQ.LCWF-QjtZ2BiBfOdtCH8OZJl37LSL8NlhrJh3ZkEIVs
+@token =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJlbWFpbCI6Impvcm1hQGdtYWlsLmNvbSIsIm5hbWUiOm51bGwsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU4ODcwMzkyLCJleHAiOjE3NjE0NjIzOTJ9.VJKWy7_bBzRpxAB-SoAj-s0mkf_vTbDqiIT1SFtp66c
 GET {{apiURL}}
 Authorization: Bearer {{token}}
 
@@ -10,8 +10,8 @@ POST {{apiURL}}/login
 Content-Type: application/json
 
 { 
-    "email": "taskinesee@arcada.fi", 
-    "password": "Password12" 
+    "email": "jorma@gmail.com", 
+    "password": "Morjens" 
 }
 
 ### Skapa ny användare
@@ -19,6 +19,10 @@ POST {{apiURL}}
 Content-Type: application/json
 
 { 
-    "email": "taskines@arcada.fi", 
+    "email": "moi@arcada.fi", 
     "password": "Password12" 
 }
+
+###
+DELETE {{apiURL}}/6
+Authorization: Bearer {{token}}

@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
     res.send({msg: "Login OK", jwt: token})
 })
 
-router.post('/signup', async (req, res) => {
+router.post('/', async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 12)
@@ -55,6 +55,33 @@ router.post('/signup', async (req, res) => {
         res.status(500).send({msg: "Error: Create user failed"})
     }
 
+})
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id, 10)
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ msg: "Invalid user ID" })
+    }
+
+    // Försök ta bort user
+    const deletedUser = await prisma.user.delete({
+      where: { id: userId }
+    })
+
+    res.json({ msg: "User deleted", id: deletedUser.id })
+
+  } catch (error) {
+    console.error(error)
+
+    if (error.code === 'P2025') {
+      // Prisma error: record not found
+      return res.status(404).json({ msg: "User not found" })
+    }
+
+    res.status(500).json({ msg: "Error: Delete user failed" })
+  }
 })
 
 
