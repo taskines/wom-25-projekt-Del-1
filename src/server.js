@@ -1,33 +1,22 @@
-const express = require('express')
-const cors = require('cors')
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-require('dotenv').config()
+const PORT = process.env.PORT || 8080;
 
-const app = express()
-app.use(cors()) // tillåt requests från alla origins
+const usersRouter = require('./routes/users');
+const refreshRouter = require('./routes/refresh');
 
-const PORT = process.env.PORT || 8080
+// /users → login yms.
+app.use('/users', usersRouter);
 
-console.log(`Node.js ${process.version}`)
-
-app.use(express.json())
-
-app.get('/', (req, res) => {
-    res.json({ msg: "Lektionsexempel 0.3" })
-})
-
-
-const usersRouter = require('./routes/users')
-app.use('/users', usersRouter)
-
-
+// /refresh → refresh ja logout
+app.use('/refresh', refreshRouter);
 
 app.listen(PORT, () => {
-    try {
-        console.log(`Running on http://localhost:${PORT}`)
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-    
-})
+  console.log(`Running on http://localhost:${PORT}`);
+});

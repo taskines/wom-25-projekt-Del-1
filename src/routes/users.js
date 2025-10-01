@@ -9,32 +9,57 @@ const prisma = new PrismaClient()
 
 
 router.post('/login', async (req, res) => {
+  try {
     const user = await prisma.user.findUnique({
-        where: { email: req.body.email }
-    })
+      where: { email: req.body.email }
+    });
 
-    if (user === null) {
-        console.log('no user found')
-        return res.status(401).send({msg: "Authentication failed"})
+    if (!user) {
+      console.log('no user found');
+      return res.status(401).json({ msg: "Authentication failed" });
     }
 
-    const match = await bcrypt.compare(req.body.password, user.password)
-
+    const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) {
-        console.log('bad password')
-        return res.status(401).send({msg: "Authentication failed"})
+      console.log('bad password');
+      return res.status(401).json({ msg: "Authentication failed" });
     }
-    
-    const token = await jwt.sign({
-        sub: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role
-    }, process.env.JWT_SECRET, {expiresIn: '30d'})
 
-    res.send({msg: "Login OK", jwt: token})
-})
+    // Access token (short expiry, esim. 15 min)
+    const accessToken = jwt.sign({
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role
+    }, process.env.JWT_SECRET, { expiresIn: '15m' });
 
+    // Refresh token (pidempi, esim. 30 päivää)
+    const refreshToken = jwt.sign(
+      { sub: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: '30d' }
+    );
+
+    // Tallenna refresh token kantaan
+    await prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 30*24*60*60*1000) // 30 päivää
+      }
+    });
+
+    // Lähetä molemmat tokenit frontendille
+    return res.json({
+      accessToken,
+      refreshToken
+    });
+
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+});
 router.post('/', async (req, res) => {
 
     try {
@@ -83,51 +108,6 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-/*// POST /refresh - rotate refresh token
-router.post('/refresh', (req, res) => {
-  const { refreshToken } = req.body || {};
-  if (!refreshToken) return res.status(400).json({ error: 'Missing refreshToken' });
 
-  const now = Date.now();
-  db.get('SELECT * FROM refresh_tokens WHERE token = ?', [refreshToken], (err, row) => {
-    if (err) return res.status(500).json({ error: 'DB error' });
-    if (!row) return res.status(401).json({ error: 'Invalid refresh token' });
-    if (row.expires_at < now) {
-      // remove expired token
-      db.run('DELETE FROM refresh_tokens WHERE id = ?', [row.id]);
-      return res.status(401).json({ error: 'Refresh token expired' });
-    }
-
-    // find user
-    db.get('SELECT * FROM users WHERE id = ?', [row.user_id], (err, user) => {
-      if (err || !user) return res.status(500).json({ error: 'User not found' });
-
-      // delete old refresh token and issue a new one (rotate)
-      db.run('DELETE FROM refresh_tokens WHERE id = ?', [row.id], (err) => {
-        if (err) return res.status(500).json({ error: 'DB error' });
-        createRefreshToken(db, user.id, (err, newRefreshToken) => {
-          if (err) return res.status(500).json({ error: 'Failed to create refresh token' });
-          const accessToken = issueAccessToken(user); // your helper
-          return res.json({ accessToken, refreshToken: newRefreshToken });
-        });
-      });
-    });
-  });
-});
-
-// DELETE /refresh - revoke a refresh token
-// Accepts JSON body { refreshToken } or Authorization: Bearer <token>
-router.delete('/refresh', (req, res) => {
-  const tokenFromBody = (req.body && req.body.refreshToken) || null;
-  const tokenFromHeader = req.headers['authorization'] && req.headers['authorization'].replace(/^Bearer\s+/, '');
-  const token = tokenFromBody || tokenFromHeader;
-  if (!token) return res.status(400).json({ error: 'Missing token' });
-
-  db.run('DELETE FROM refresh_tokens WHERE token = ?', [token], function(err) {
-    if (err) return res.status(500).json({ error: 'DB error' });
-    return res.json({ ok: true, deleted: this.changes });
-  });
-});
-*/
 
 module.exports = router
